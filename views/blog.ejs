@@ -25,7 +25,9 @@
         <% }) %>
       </article>
       <div class="pase-links">
+        <% if (currentPage > 1) { %>
         <a href="?page=<%= currentPage -1 %>">前のページへ</a>
+        <% } %>
         <a href="?page=<%= currentPage + 1 %>">次のページへ</a>
       </div>
     </div>
