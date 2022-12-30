@@ -1,4 +1,5 @@
 // Expressサーバーパッケージを読み込み
+const { response } = require('express')
 const express = require('express')
 // 同じフォルダにあるfunctions.jsを読み込み
 const func = require('./functions')
@@ -13,7 +14,7 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs')
 
 // POSTリクエストのパラメータを取得するための設定
-app.use(express.urlencoded[{ extended: false }])
+app.use(express.urlencoded({ extended: false }))
 
 // ルーティング設定
 app.get('/blog/', (request, response) => {
@@ -56,6 +57,15 @@ app.get('/blog/:date', (request, response) => {
   })
 })
 
+app.get('/admin/', (request, response) => {
+  // ブログ記事ファイル一覧取得
+  const files = func.getEntryFiles()
+  // メインコンテンツに表示するブログ記事
+  const entries = func.getEntries(files)
+
+  response.render('admin', { entries })
+})
+
 app.get('/admin/edit', (request, response) => {
   response.render('edit')
 })
@@ -63,8 +73,8 @@ app.get('/admin/edit', (request, response) => {
 app.post('/admin/post_entry', (request, response) => {
   const date = new Date()
   const ymd = [date.getFullYear(), ('0' + (date.getMonth() + 1)).substr(-2), ('0' + date.getDate()).substr(-2)].join('')
-  func.saceEntry(ymd.request.body.title, request.body.content)
-  request.redirect('/blog')
+  func.saveEntry(ymd.request.body.title, request.body.content)
+  response.redirect('/blog')
 })
 
 // Expressサーバー起動
