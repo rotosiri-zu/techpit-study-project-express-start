@@ -25,6 +25,7 @@ app.get('/blog/', (request, response) => {
   const files = func.getEntryFiles()
   // メインコンテンツに表示するブログ記事
   const entries = func.getEntries(files)
+
   // サイドバーに表示する年月別記事リスト
   const sideList = func.getSideList(entries)
 
@@ -66,7 +67,10 @@ app.get('/admin/', (request, response) => {
   // メインコンテンツに表示するブログ記事
   const entries = func.getEntries(files)
 
-  response.render('admin', { entries })
+  const date = new Date()
+  const ymd = [date.getFullYear(), ('0' + (date.getMonth() + 1)).substr(-2), ('0' + date.getDate()).substr(-2)].join('')
+
+  response.render('admin', { entries, hasTodaysEntry: files.indexOf(ymd + '.txt') !== -1 })
 })
 
 app.get('/admin/edit', (request, response) => {
