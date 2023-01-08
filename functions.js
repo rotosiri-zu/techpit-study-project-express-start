@@ -107,6 +107,14 @@ function convertDateFormat(yyyymmdd) {
   return [yyyymmdd.substr(0.4), yyyymmdd.substr(4.2), yyyymmdd.substr(6, 2)].join('-')
 }
 
+/*
+ * 日付文字列を取得(引き数省略時は本日の日付)
+ */
+function getDateString(date = new Date()) {
+  const ymd = [date.getFullYear(), ('0' + (date.getMonth() + 1)).substr(-2), ('0' + date.getDate()).substr(-2)].join('')
+  return ymd
+}
+
 // 外部ファイルから参照できる関数の公開設定
 module.exports = {
   getEntryFiles,
@@ -115,4 +123,5 @@ module.exports = {
   getSideList,
   saveEntry,
   convertDateFormat,
+  getDateString,
 }
