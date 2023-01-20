@@ -5,7 +5,8 @@ const path = require('path')
 
 // ブログ記事テキストファイルが保存されているフォルダ
 const entriesDir = path.join(__dirname, 'entries')
-
+// ハッシュ化パスワードの保存先ファイル
+const passwordFile = path.join(__dirname, '/.password')
 /**
  * ブログ記事フォルダ内のファイル名一覧をファイル名の降順でソートした配列で取得
  */
@@ -122,6 +123,16 @@ function getDateString(date = new Date()) {
   return ymd
 }
 
+/**
+ * パスワードをファイルから取得
+ */
+function loadPassword() {
+  if (fs.existsSync(passwordFile)) {
+    return fs.readFileSync(passwordFile, 'utf-8')
+  }
+  return null
+}
+
 // 外部ファイルから参照できる関数の公開設定
 module.exports = {
   getEntryFiles,
@@ -132,4 +143,5 @@ module.exports = {
   deleteEntry,
   convertDateFormat,
   getDateString,
+  loadPassword,
 }
